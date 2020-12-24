@@ -8,5 +8,4 @@ services:
         image: "${IMAGE_TAG}"
         volumes: 
             - /var/run/influxdb:/var/run/influxdb
-            - /etc/localtime:/etc/localtime
 
