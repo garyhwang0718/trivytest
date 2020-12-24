@@ -1,0 +1,15 @@
+Source: qundr-sec-ops
+Section: unknown
+Priority: optional
+Maintainer: rukechen <rukechen@qnap.com>
+Build-Depends: debhelper (>= 10), docker-ce
+Standards-Version: 4.1.2
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: https://anonscm.debian.org/git/collab-maint/qundr-sec-ops.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/qundr-sec-ops.git
+
+Package: qundr-sec-ops
+Architecture: any
+Depends: docker-ce
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
