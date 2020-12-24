@@ -1,0 +1,10 @@
+/var/log/influxdb/influxd.log
+{
+    daily
+    size 50M
+    rotate 7
+    missingok
+    dateext
+    copytruncate
+    compress
+}

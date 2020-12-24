@@ -1,0 +1,43 @@
+stages:
+   - build
+   - test
+   - release
+
+build_amd64:
+ stage: build
+ artifacts:
+   name: "build_amd64"
+   untracked: false
+   expire_in: 60 mins
+   paths:
+       - $CI_PROJECT_DIR/ci_work/qinfluxdbkapacitor-image_*.deb
+       - $CI_PROJECT_DIR/ci_work/qinfluxdbkapacitor-image_*.changes
+ script:
+   - echo "build"
+   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash
+ tags:
+   - qne-ndr-runner
+
+test_amd64:
+ stage: test
+ dependencies:
+     - build_amd64
+ script:
+   - echo "test"
+   - |
+       if [ -f ".gitlab-ci-test.sh" ];then
+         bash -x .gitlab-ci-test.sh;
+       fi
+ tags:
+   - qne-ndr-runner
+ allow_failure: true
+
+release_amd64:
+ stage: release
+ dependencies:
+     - build_amd64
+ script:
+   - echo "repo"
+   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash
+ tags:
+   - qne-ndr-runner

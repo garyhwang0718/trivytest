@@ -1,0 +1,7 @@
+1. Install gitlab-runner on a vm
+2. sudo gitlab-runner register (use info on the gitlab settings/CICD page, choose 'shell' mode)
+3. sudo gitlab-runner verify (check the runner is alive)
+4. add user 'gitlab-runner', and add it into sudoers
+5. add following line in /etc/sudoers: (then gitlab-runner can sudo without password)
+  gitlab-runner     ALL=(ALL) NOPASSWD:ALL
+6. add user 'gitlab-runner' into docker group

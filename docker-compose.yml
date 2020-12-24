@@ -1,0 +1,12 @@
+# useage 
+# env $(cat /var/lib/qtraps-image/script/.env) docker-compose -f /var/lib/qtraps-image/script/docker-compose.yml -p $new_project_name up -d
+
+version: "3"
+
+services:
+    qinfluxdbkapcaitor_instance:
+        image: "${IMAGE_TAG}"
+        volumes: 
+            - /var/run/influxdb:/var/run/influxdb
+            - /etc/localtime:/etc/localtime
+

@@ -1,0 +1,7 @@
+*.deb
+*.tar
+debian/tmp/*
+debian/patches/*
+**code_signing.log
+**upload_profiles.log
+**/.dbhelper/**
