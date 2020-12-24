@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for qtraps-image
+# postrm script for qundr-sec-ops
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,8 @@ set -e
 # the debian-policy package
 
 QSECOPS_ON_AIR="qsecops_on_air"
-IMAGE_PATH="/usr/share/doc/qinfluxdbkapacitor-image"
+NDR_PATH="/.data/ndr-management"
+IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
         if [ -f "$IMAGE_PATH/$QSECOPS_ON_AIR" ]; then

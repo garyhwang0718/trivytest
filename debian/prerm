@@ -1,5 +1,5 @@
 #!/bin/bash
-# prerm script for qtraps-image
+# prerm script for qundr-sec-ops
 #
 # see: dh_installdeb(1)
 
@@ -16,9 +16,10 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-SCRIPT_PATH="/var/lib/qinfluxdbkapacitor-image/script"
 CONTROL_SH="control.sh"
-NDR_ROOT_DIR="/.data/ndr-management"
+NDR_PATH="/.data/ndr-management"
+IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
 
 case "$1" in
     remove|upgrade|deconfigure)

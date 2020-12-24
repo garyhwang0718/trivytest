@@ -1,5 +1,5 @@
 #!/bin/bash
-# preinst script for qtraps-image
+# preinst script for qundr-sec-ops
 #
 # see: dh_installdeb(1)
 

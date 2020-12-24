@@ -1,6 +1,7 @@
 
-IMAGE_PATH = $(DESTDIR)/usr/share/doc/qinfluxdbkapacitor-image
-SCRIPT_PATH = $(DESTDIR)/var/lib/qinfluxdbkapacitor-image/script
+IMAGE_PATH = $(NDR_PATH)/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH = $(NDR_PATH)/sec-ops/scripts
+LOG_PATH = $(NDR_PATH)/log/sec-ops/
 NDR_PATH = $(DESTDIR)/.data/ndr-management
 TARGET_IMG_NAME = qinfluxdbkapacitor_base
 TARGET1 = $(TARGET_IMG_NAME).tar
@@ -14,7 +15,7 @@ all:
 install:
 	mkdir -p $(IMAGE_PATH)
 	mkdir -p $(SCRIPT_PATH)
-	mkdir -p $(NDR_PATH)/scripts
+	mkdir -p $(LOG_PATH)
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)
 	install -m 0755 $(TARGET2) $(SCRIPT_PATH)
 	install -m 0755 $(QSECOPS_ON_AIR) $(IMAGE_PATH)

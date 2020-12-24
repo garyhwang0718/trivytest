@@ -1,8 +1,8 @@
 #!/bin/bash
 
-INSTALL_PATH="/usr/share/doc/qinfluxdbkapacitor-image"
+NDR_PATH="/.data/ndr-management"
 IMAGE_TAR="qinfluxdbkapacitor_base.tar"
-
+INSTALL_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
 CMD_ECHO="/bin/echo"
 CMD_AWK="/usr/bin/awk"
 CMD_RM="/bin/rm"

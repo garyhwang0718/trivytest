@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for qtraps-image
+# postinst script for qundr-sec-ops
 #
 # see: dh_installdeb(1)
 
@@ -17,10 +17,11 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+
 CONTROL_SH="control.sh"
-SCRIPT_PATH="/var/lib/qinfluxdbkapacitor-image/script"
-IMAGE_PATH="/usr/share/doc/qinfluxdbkapacitor-image"
-NDR_ROOT_DIR="/.data/ndr-management"
+NDR_PATH="/.data/ndr-management"
+IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
 
 case "$1" in
     configure)
