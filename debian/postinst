@@ -33,6 +33,13 @@ case "$1" in
                 echo "load qinfluxdbkapacitor-image failure"
                 exit 1
             fi
+	    `"$SCRIPT_PATH/$CONTROL_SH" start || true`
+            if [ "x$?" = "x0" ]; then
+                echo "star sec-ops successfully"
+            else
+                echo "start sec-ops failure"
+                exit 1
+            fi
         fi
     ;;
 

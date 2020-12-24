@@ -8,6 +8,15 @@ TARGET1 = $(TARGET_IMG_NAME).tar
 TARGET2 = control.sh
 QSECOPS_ON_AIR = qsecops_on_air
 TARGET4 = docker-compose.yml
+INFLUXDB_CONF_PATH = $(NDR_PATH)/sec-ops/conf/influxdb/
+KAPACITOR_CONF_PATH = $(NDR_PATH)/sec-ops/conf/kapacitor/
+LOGROTATE_CONF_PATH= $(NDR_PATH)/sec-ops/conf/logrotate/
+ENV_CONF_PATH = $(NDR_PATH)/sec-ops/
+INFLUXDB_CONF = influxdb/influxdb.conf
+KAPACITOR_CONF = kapacitor/kapacitor.conf
+LOGROTATE_CONF = logrotate
+ENV_CONF= .env
+
 
 all:
 	./pre_build.sh
@@ -16,10 +25,18 @@ install:
 	mkdir -p $(IMAGE_PATH)
 	mkdir -p $(SCRIPT_PATH)
 	mkdir -p $(LOG_PATH)
+	mkdir -p ${INFLUXDB_CONF_PATH}
+	mkdir -p ${KAPACITOR_CONF_PATH}
+	mkdir -p ${LOGROTATE_CONF_PATH}
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)
 	install -m 0755 $(TARGET2) $(SCRIPT_PATH)
 	install -m 0755 $(QSECOPS_ON_AIR) $(IMAGE_PATH)
 	install -m 0755 $(TARGET4) $(SCRIPT_PATH)
+	install -m 0755 $(INFLUXDB_CONF) $(INFLUXDB_CONF_PATH)
+	install -m 0755 $(KAPACITOR_CONF) $(KAPACITOR_CONF_PATH)
+	install -m 0755 $(LOGROTATE_CONF)/influx $(LOGROTATE_CONF_PATH)
+	install -m 0755 $(LOGROTATE_CONF)/kapacitor $(LOGROTATE_CONF_PATH)
+	install -m 0755 $(ENV_CONF) $(ENV_CONF_PATH)
 
 clean:
 	rm -f ./*.deb

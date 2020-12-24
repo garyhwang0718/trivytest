@@ -10,6 +10,6 @@ Homepage: <insert the upstream URL, if relevant>
 
 Package: qundr-sec-ops
 Architecture: any
-Depends: docker-ce
+Depends: docker-ce, docker-compose
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

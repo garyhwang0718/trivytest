@@ -3,6 +3,7 @@
 NDR_PATH="/.data/ndr-management"
 IMAGE_TAR="qinfluxdbkapacitor_base.tar"
 INSTALL_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
 CMD_ECHO="/bin/echo"
 CMD_AWK="/usr/bin/awk"
 CMD_RM="/bin/rm"
@@ -17,26 +18,30 @@ exit_with_error_and_clean()
 
 TARGET_IMAGE=
 get_target_image_name() {
-    TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Trap" "Docker_Image"`
+    TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Secops" "Docker_Image"`
     # Make sure the image is loaded
     RET=`docker images --format '{{.Repository}}:{{.Tag}}' | grep ${TARGET_IMAGE}`
     if [ "xno_image" == "x${TARGET_IMAGE}" ] || [ "x0" != "x$?" ]; then
         # Need to load the image from tar
-        RET=`"$SCRIPT_PATH/$INIT_SH" load_image 2>&1`
+        RET=`"$SCRIPT_PATH/control.sh" load_image 2>&1`
         if [ "x0" != "x$?" ]; then
             echo "${RET}"
             exit 1
         fi
-        TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Trap" "Docker_Image"`
+        TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Secops" "Docker_Image"`
     fi
 }
 
 stop_all_containers(){
+    #
+    touch ${LOG_FILE}
+    #
     OUTPUT=`docker ps -a --format '{{.ID}} {{.Image}} {{.Names}}'`
     if [ "x0" != "x$?" ]; then
         echo "Failed to run docker command"
         exit 1
     fi
+    echo "stop all containers ${OUTPUT}" >> ${LOG_FILE}
     ARRAY=()
     CONTAINERS=`echo "${OUTPUT}" | awk '{print($1, $2, $3)}'`
     while IFS= read -r LINE; do
@@ -49,6 +54,7 @@ stop_all_containers(){
     done <<< "${CONTAINERS}"
     for CONTAINER_NAME in ${ARRAY[@]}; do
         IS_RUNNING=`docker inspect -f '{{.State.Running}}' ${CONTAINER_NAME} | tr '[:lower:]' '[:upper:]'`
+	echo "docker ${IS_RUNNING}" >> ${LOG_FILE}
         if [ "TRUE" == "${IS_RUNNING}" ]; then
             echo "Stop trap container ${CONTAINER_NAME}"
             RET=`docker stop ${CONTAINER_NAME} 2>&1`
@@ -84,6 +90,15 @@ rm_image()
 	fi
 }
 
+start_sec_ops()
+{
+   env $(cat ${NDR_PATH}/sec-ops/.env) docker-compose -f ${NDR_PATH}/sec-ops/scripts/docker-compose.yml up -d
+   if [ "x0" != "x$?" ] ; then
+       echo "docker run sec-ops failure" >> ${LOG_FILE}
+       exit 1
+   fi 
+}
+
 case "$1" in
 	load_image)
 		load_image
@@ -93,6 +108,9 @@ case "$1" in
 		;;
         stop)
 		stop_all_containers
+		;;
+	start)
+		start_sec_ops
 		;;
 	*)
 		echo "Usage: $0 {load_image|rm_image}"

@@ -4,8 +4,17 @@
 version: "3"
 
 services:
-    qinfluxdbkapcaitor_instance:
+    qundr-sec-ops:
         image: "${IMAGE_TAG}"
+        environment:
+            - KAPACITOR_HOSTNAME=kapacitor
+            - KAPACITOR_INFLUXDB_0_URLS_0=http://127.0.0.1:8086
         volumes: 
             - /var/run/influxdb:/var/run/influxdb
+            - ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+            - ${NDR_PATH}/${SEC_OPS_PATH}/conf/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+            - ${NDR_PATH}/log/${SEC_OPS_PATH}/:/var/log
+        expose:
+            - "8086"
+            - "9092"
 
