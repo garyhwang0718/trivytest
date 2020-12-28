@@ -6,6 +6,7 @@ version: "3"
 services:
     qundr-sec-ops:
         image: "${IMAGE_TAG}"
+        container_name: "qunder-sec-ops"
         environment:
             - KAPACITOR_HOSTNAME=kapacitor
             - KAPACITOR_INFLUXDB_0_URLS_0=http://127.0.0.1:8086

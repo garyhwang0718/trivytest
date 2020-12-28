@@ -16,54 +16,14 @@ exit_with_error_and_clean()
 	exit 1
 }
 
-TARGET_IMAGE=
-get_target_image_name() {
-    TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Secops" "Docker_Image"`
-    # Make sure the image is loaded
-    RET=`docker images --format '{{.Repository}}:{{.Tag}}' | grep ${TARGET_IMAGE}`
-    if [ "xno_image" == "x${TARGET_IMAGE}" ] || [ "x0" != "x$?" ]; then
-        # Need to load the image from tar
-        RET=`"$SCRIPT_PATH/control.sh" load_image 2>&1`
-        if [ "x0" != "x$?" ]; then
-            echo "${RET}"
-            exit 1
-        fi
-        TARGET_IMAGE=`qgetcfg -d no_image --app=qundr "Secops" "Docker_Image"`
-    fi
-}
+stop_sec_ops()
+{
+   env $(cat ${NDR_PATH}/sec-ops/.env) docker-compose -f ${NDR_PATH}/sec-ops/scripts/docker-compose.yml down
+   if [ "x0" != "x$?" ] ; then
+       echo "docker stop and rm qundr-sec-ops failure" >> ${LOG_FILE}
+       exit 1
+   fi
 
-stop_all_containers(){
-    #
-    touch ${LOG_FILE}
-    #
-    OUTPUT=`docker ps -a --format '{{.ID}} {{.Image}} {{.Names}}'`
-    if [ "x0" != "x$?" ]; then
-        echo "Failed to run docker command"
-        exit 1
-    fi
-    echo "stop all containers ${OUTPUT}" >> ${LOG_FILE}
-    ARRAY=()
-    CONTAINERS=`echo "${OUTPUT}" | awk '{print($1, $2, $3)}'`
-    while IFS= read -r LINE; do
-        CONTAINER_ID=`echo "${LINE}" | awk '{print($1)}'`
-        CONTAINER_IMAGE=`echo "${LINE}" | awk '{print($2)}'`
-        CONTAINER_NAME=`echo "${LINE}" | awk '{print($3)}'`
-        if [ "${CONTAINER_IMAGE}" == "${TARGET_IMAGE}" ]; then
-            ARRAY+=(${CONTAINER_NAME})
-        fi
-    done <<< "${CONTAINERS}"
-    for CONTAINER_NAME in ${ARRAY[@]}; do
-        IS_RUNNING=`docker inspect -f '{{.State.Running}}' ${CONTAINER_NAME} | tr '[:lower:]' '[:upper:]'`
-	echo "docker ${IS_RUNNING}" >> ${LOG_FILE}
-        if [ "TRUE" == "${IS_RUNNING}" ]; then
-            echo "Stop trap container ${CONTAINER_NAME}"
-            RET=`docker stop ${CONTAINER_NAME} 2>&1`
-            if [ "x0" != "x$?" ]; then
-                 echo "Unable to stop trap container: (${CONTAINER_NAME})"
-                 echo ${RET}
-            fi
-        fi
-    done
 }
 
 load_image()
@@ -107,7 +67,7 @@ case "$1" in
 		rm_image
 		;;
         stop)
-		stop_all_containers
+		stop_sec_ops
 		;;
 	start)
 		start_sec_ops
