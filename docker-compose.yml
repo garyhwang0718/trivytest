@@ -10,6 +10,7 @@ services:
         environment:
             - KAPACITOR_HOSTNAME=kapacitor
             - KAPACITOR_INFLUXDB_0_URLS_0=http://127.0.0.1:8086
+            - INFLUXDB_DB=ndr_management
         volumes: 
             - /var/run/influxdb:/var/run/influxdb
             - ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
