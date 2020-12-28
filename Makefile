@@ -3,6 +3,7 @@ IMAGE_PATH = $(NDR_PATH)/sec-ops/doc/qinfluxdbkapacitor-image
 SCRIPT_PATH = $(NDR_PATH)/sec-ops/scripts
 LOG_PATH = $(NDR_PATH)/log/sec-ops/
 NDR_PATH = $(DESTDIR)/.data/ndr-management
+INFLUXDB_PATH = $(NDR_PATH)/log/sec-ops/lib
 TARGET_IMG_NAME = qinfluxdbkapacitor_base
 TARGET1 = $(TARGET_IMG_NAME).tar
 TARGET2 = control.sh
@@ -28,6 +29,7 @@ install:
 	mkdir -p ${INFLUXDB_CONF_PATH}
 	mkdir -p ${KAPACITOR_CONF_PATH}
 	mkdir -p ${LOGROTATE_CONF_PATH}
+	mkdir -p ${INFLUXDB_PATH}
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)
 	install -m 0755 $(TARGET2) $(SCRIPT_PATH)
 	install -m 0755 $(QSECOPS_ON_AIR) $(IMAGE_PATH)
