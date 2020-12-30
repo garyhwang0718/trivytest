@@ -21,4 +21,6 @@ services:
         expose:
             - "8086"
             - "9092"
+        extra_hosts:
+            - "kapacitor:127.0.0.1"
 
