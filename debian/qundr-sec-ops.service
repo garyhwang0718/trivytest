@@ -1,0 +1,26 @@
+[Unit]
+Description=ndr_manager
+After=network.target
+
+[Service]
+Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
+Environment="SCRIPT_PATH=/.data/ndr-management/sec-ops/scripts"
+Environment="CORRELATION_SCRIPT_PATH=/.data/ndr-management/correlation-rule/scripts"
+Environment="CONTROL_SH=control.sh"
+Type = simple
+tty = true
+User=root
+Group=root
+
+ProtectHome=read-only
+ProtectSystem=full
+ReadWritePaths=/var/run/ /var/log/ /var/cache/
+PermissionsStartOnly=true
+
+ExecStartPre=
+ExecStartPost=/bin/bash -c 'if [ -f "$CORRELATION_SCRIPT_PATH/$CONTROL_SH" ]; then ${CORRELATION_SCRIPT_PATH}/control.sh load_tasks; fi'
+ExecStart=/bin/bash -c '${SCRIPT_PATH}/control.sh start'
+
+[Install]
+WantedBy=multi-user.target
+
