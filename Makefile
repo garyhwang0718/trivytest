@@ -2,7 +2,7 @@
 IMAGE_PATH = $(NDR_PATH)/sec-ops/doc/qinfluxdbkapacitor-image
 SCRIPT_PATH = $(NDR_PATH)/sec-ops/scripts
 LOG_PATH = $(NDR_PATH)/log/sec-ops/
-NDR_PATH = $(DESTDIR)/.data/ndr-management
+NDR_PATH = $(DESTDIR)/.data/qne-qundr
 INFLUXDB_PATH = $(NDR_PATH)/log/sec-ops/lib
 INFLUXDB_INIT_PATH = $(NDR_PATH)/sec-ops/docker-entrypoint-initdb.d
 TARGET_IMG_NAME = qinfluxdbkapacitor_base

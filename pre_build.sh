@@ -39,7 +39,7 @@ fi
 
 `echo "QINFLUXDBKAPACITOR_TAG="$TIMESTAMP"" > "$TAG_ENV_FILE"`
 `echo "IMAGE_TAG=$TARGET_IMG_NAME:$TIMESTAMP" >> "$TAG_ENV_FILE"`
-`echo "NDR_PATH=/.data/ndr-management" >> "$TAG_ENV_FILE"`
+`echo "NDR_PATH=/.data/qne-qundr" >> "$TAG_ENV_FILE"`
 `echo "SEC_OPS_PATH=sec-ops" >> "$TAG_ENV_FILE"`
 docker save ${TARGET_IMG_NAME}:${TIMESTAMP} > ${TARGET_IMG_NAME}.tar
 docker rmi ${TARGET_IMG_NAME}:${TIMESTAMP}

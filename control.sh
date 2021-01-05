@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NDR_PATH="/.data/ndr-management"
+NDR_PATH="/.data/qne-qundr"
 IMAGE_TAR="qinfluxdbkapacitor_base.tar"
 INSTALL_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
 SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts

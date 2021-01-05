@@ -19,7 +19,7 @@ set -e
 # the debian-policy package
 
 QSECOPS_ON_AIR="qsecops_on_air"
-NDR_PATH="/.data/ndr-management"
+NDR_PATH="/.data/qne-qundr"
 IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

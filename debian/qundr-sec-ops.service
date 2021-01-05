@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
-Environment="SCRIPT_PATH=/.data/ndr-management/sec-ops/scripts"
-Environment="CORRELATION_SCRIPT_PATH=/.data/ndr-management/correlation-rule/scripts"
+Environment="SCRIPT_PATH=/.data/qne-qundr/sec-ops/scripts"
+Environment="CORRELATION_SCRIPT_PATH=/.data/qne-qundr/correlation-rule/scripts"
 Environment="CONTROL_SH=control.sh"
 Type = simple
 tty = true

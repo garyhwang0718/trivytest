@@ -1,5 +1,5 @@
 # useage 
-# env $(cat /.data/ndr-management/sec-ops/.env) docker-compose -f /.data/ndr-management/sec-ops/scripts/docker-compose.yml up -d
+# env $(cat /.data/qne-qundr/sec-ops/.env) docker-compose -f /.data/qne-qundr/sec-ops/scripts/docker-compose.yml up -d
 
 version: "3"
 
@@ -18,6 +18,8 @@ services:
             - ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/
             - ${NDR_PATH}/${SEC_OPS_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
             - ${NDR_PATH}/${SEC_OPS_PATH}/rules:/var/lib/rules
+            - ${NDR_PATH}/${SEC_OPS_PATH}/rule_handler:/var/lib/rule_handler
+            - /var/run/ndrmgr.socket:/var/run/ndrmgr.socket
         expose:
             - "8086"
             - "9092"
