@@ -9,8 +9,8 @@ build_amd64:
    untracked: false
    expire_in: 60 mins
    paths:
-       - $CI_PROJECT_DIR/ci_work/qinfluxdbkapacitor-image_*.deb
-       - $CI_PROJECT_DIR/ci_work/qinfluxdbkapacitor-image_*.changes
+       - $CI_PROJECT_DIR/ci_work/*.deb
+       - $CI_PROJECT_DIR/ci_work/*.changes
  script:
    - echo "build"
    - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash
