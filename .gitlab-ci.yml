@@ -1,6 +1,5 @@
 stages:
    - build
-   - test
    - release
 
 build_amd64:
@@ -16,21 +15,7 @@ build_amd64:
    - echo "build"
    - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash
  tags:
-   - qne-ndr-runner
-
-test_amd64:
- stage: test
- dependencies:
-     - build_amd64
- script:
-   - echo "test"
-   - |
-       if [ -f ".gitlab-ci-test.sh" ];then
-         bash -x .gitlab-ci-test.sh;
-       fi
- tags:
-   - qne-ndr-runner
- allow_failure: true
+   - qne-qundr-sec-ops-builder
 
 release_amd64:
  stage: release
@@ -40,4 +25,4 @@ release_amd64:
    - echo "repo"
    - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash
  tags:
-   - qne-ndr-runner
+   - qne-qundr-sec-ops-publisher
