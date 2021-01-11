@@ -15,6 +15,9 @@ if [ ! -f /var/log/influxdb/influxd.log ]; then
 fi
 
 exec "$@" 2>/var/log/influxdb/influxd.log &
+if [ -f /docker-entrypoint-initdb.d/initcq.sh ]; then
+    /docker-entrypoint-initdb.d/initcq.sh
+fi
 exec /usr/sbin/crond -f &
 KAPACITOR_HOSTNAME=${KAPACITOR_HOSTNAME:-$HOSTNAME}
 export KAPACITOR_HOSTNAME

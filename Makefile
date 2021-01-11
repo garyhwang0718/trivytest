@@ -18,6 +18,7 @@ INFLUXDB_CONF = influxdb/influxdb.conf
 KAPACITOR_CONF = kapacitor/kapacitor.conf
 LOGROTATE_CONF = logrotate
 INFLUXDB_INIT = influxdb/init.sh
+INFLUXDB_CQ_INIT = influxdb/initcq.sh
 ENV_CONF= .env
 
 
@@ -43,6 +44,7 @@ install:
 	install -m 0755 $(LOGROTATE_CONF)/kapacitor $(LOGROTATE_CONF_PATH)
 	install -m 0755 $(ENV_CONF) $(ENV_CONF_PATH)
 	install -m 0755 $(INFLUXDB_INIT) $(INFLUXDB_INIT_PATH)
+	install -m 0755 $(INFLUXDB_CQ_INIT) $(INFLUXDB_INIT_PATH)
 
 clean:
 	rm -f ./*.deb
