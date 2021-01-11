@@ -21,6 +21,8 @@ set -e
 QSECOPS_ON_AIR="qsecops_on_air"
 NDR_PATH="/.data/qne-qundr"
 IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
+LOG_PATH=${NDR_PATH}/log/sec-ops
+SEC_OPS_PATH=${NDR_PATH}/sec-ops
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
         if [ -f "$IMAGE_PATH/$QSECOPS_ON_AIR" ]; then
@@ -29,6 +31,11 @@ case "$1" in
         if [ "x$?" = "x1" ]; then
             echo "rm $IMAGE_PATH/$QSECOPS_ON_AIR failure"
             exit1
+        fi
+        if [ x"$1" = x"remove" ]; then
+            echo "remove case. Remove all related folder"
+	    `rm -rf $LOG_PATH`
+	    `rm -rf $SEC_OPS_PATH`
         fi
     ;;
 
