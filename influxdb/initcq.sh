@@ -20,7 +20,7 @@ if [ $? -eq 0 ]; then
     for element in "${jsonResult[@]}"
     do
         if [ x"$element" != x"[" ] && [ x"$element" != x"]" ]; then
-            newElement=$(echo element | sed 's/,//g')
+            newElement=$(echo $element | sed 's/,//g')
             influx -execute="DROP CONTINUOUS QUERY "${newElement}" ON "ndr_management"" -database=ndr_management
         fi
     done
