@@ -11,6 +11,7 @@ build_amd64:
    paths:
        - $CI_PROJECT_DIR/ci_work/*.deb
        - $CI_PROJECT_DIR/ci_work/*.changes
+       - $CI_PROJECT_DIR/ci_work/qundr-sec-ops/debian/changelog
  script:
    - echo "build"
    - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash
