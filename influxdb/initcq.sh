@@ -6,11 +6,11 @@ for i in {30..0}; do
     if $INFLUX_CMD "$INIT_QUERY" &> /dev/null; then
         break
     fi
-    echo '[initcq]influxdb init process in progress...'
-    sleep 1
+    echo "[$(date)] [initcq] influxdb init process in progress..."
+    sleep 60
 done
 if [ "$i" = 0 ]; then
-        echo >&2 '[initcq]influxdb init process failed.'
+        echo >&2 "[$(date)] [initcq] influxdb init process failed."
         exit 1
 fi
 

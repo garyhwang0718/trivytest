@@ -30,12 +30,13 @@ case "$1" in
         fi
         if [ "x$?" = "x1" ]; then
             echo "rm $IMAGE_PATH/$QSECOPS_ON_AIR failure"
-            exit1
+            exit 1
         fi
         if [ x"$1" = x"remove" ]; then
             echo "remove case. Remove all related folder"
-	    `rm -rf $LOG_PATH`
-	    `rm -rf $SEC_OPS_PATH`
+            `rm -rf $LOG_PATH`
+            `rm -rf $SEC_OPS_PATH`
+            `qrmcfg --app=qundr "retention_policy" "default"`
         fi
     ;;
 
