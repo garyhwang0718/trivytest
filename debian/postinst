@@ -29,6 +29,7 @@ case "$1" in
             `"$SCRIPT_PATH/$CONTROL_SH" load_image || true`
             if [ "x$?" = "x0" ]; then
                 echo "load qinfluxdbkapacitor image successfully"
+                "$SCRIPT_PATH/$CONTROL_SH" ver_cmp $2
             else 
                 echo "load qinfluxdbkapacitor-image failure"
                 exit 1

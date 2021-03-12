@@ -48,8 +48,9 @@ VOLUME /var/lib/influxdb
 
 COPY entrypoint.sh /entrypoint.sh
 COPY influxdb/init-influxdb.sh /init-influxdb.sh
+COPY influxdb/migrate.sh /usr/bin/migrate.sh
 
-RUN chmod a+x /entrypoint.sh && chmod a+x /init-influxdb.sh && mkdir -p /var/log/influxdb/
+RUN chmod a+x /entrypoint.sh && chmod a+x /init-influxdb.sh && mkdir -p /var/log/influxdb/ && chmod a+x /usr/bin/migrate.sh
 
 COPY kapacitor/kapacitor.conf /etc/kapacitor/kapacitor.conf
 COPY logrotate/influx /etc/logrotate.d/

@@ -89,6 +89,26 @@ retention_policy()
     fi
 
 }
+
+version_compare()
+{
+    OLD_VERSION="$1"
+    VERSION=`dpkg-query --show --showformat '${Version}' qundr-sec-ops`
+    if [ x"${OLD_VERSION}" != x"" ];then
+        dpkg --compare-versions "${OLD_VERSION}" le "1.0.0.q24"
+        if [ $? -eq 0 ];then
+            echo "Migrate to tsi1"
+            source ${NDR_PATH}/sec-ops/.env
+            docker run -d --rm --name qunder-sec-ops-migrate -v ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro -v ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/ ${IMAGE_TAG} bash
+            docker exec qunder-sec-ops-migrate migrate.sh
+            if [ $? -eq 0 ]; then
+                echo "Migrate to tsi1 successfully."
+            fi
+            docker stop qunder-sec-ops-migrate
+        fi
+    fi
+}
+
 case "$1" in
 	load_image)
 		load_image
@@ -104,6 +124,9 @@ case "$1" in
 		;;
         configure)
                 retention_policy
+                ;;
+        ver_cmp)
+                version_compare $2
                 ;;
 	*)
 		echo "Usage: $0 {load_image|rm_image}"

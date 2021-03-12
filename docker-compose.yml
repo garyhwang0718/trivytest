@@ -25,4 +25,5 @@ services:
             - "9092"
         extra_hosts:
             - "kapacitor:127.0.0.1"
+        network_mode: bridge
 
