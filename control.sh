@@ -99,12 +99,12 @@ version_compare()
         if [ $? -eq 0 ];then
             echo "Migrate to tsi1"
             source ${NDR_PATH}/sec-ops/.env
-            docker run -d --rm --name qunder-sec-ops-migrate -v ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro -v ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/ ${IMAGE_TAG} bash
-            docker exec qunder-sec-ops-migrate migrate.sh
+            docker run -d --rm --name qundr-sec-ops-migrate -v ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro -v ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/ ${IMAGE_TAG} bash
+            docker exec qundr-sec-ops-migrate migrate.sh
             if [ $? -eq 0 ]; then
                 echo "Migrate to tsi1 successfully."
             fi
-            docker stop qunder-sec-ops-migrate
+            docker stop qundr-sec-ops-migrate
         fi
     fi
 }

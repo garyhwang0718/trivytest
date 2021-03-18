@@ -1,6 +1,7 @@
 [Unit]
 Description=ndr_manager
-After=network.target
+Requires=qne-init-done.service docker.service
+After=multi-user.target docker.service
 
 [Service]
 Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
