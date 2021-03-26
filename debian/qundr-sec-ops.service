@@ -1,7 +1,7 @@
 [Unit]
 Description=ndr_manager
-Requires=qne-init-done.service docker.service
-After=multi-user.target docker.service
+Requires=docker.service qundr-init.service
+After=multi-user.target docker.service qundr-init.service
 
 [Service]
 Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
