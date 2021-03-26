@@ -9,7 +9,6 @@ Environment="SCRIPT_PATH=/.data/qne-qundr/sec-ops/scripts"
 Environment="CORRELATION_SCRIPT_PATH=/.data/qne-qundr/correlation-rule/scripts"
 Environment="CONTROL_SH=control.sh"
 Type = simple
-tty = true
 User=root
 Group=root
 
