@@ -25,6 +25,31 @@ SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
 
 case "$1" in
     configure)
+        result=$(/bin/ip ro | /bin/grep docker0 | /usr/bin/awk -F ' ' '{print $1}' || true)
+        if [ x"$result" = x"" ]; then
+            echo "qundr-sec-ops: postinstall : restart containerd and docker service"
+            retry=0
+            while true
+            do
+                systemctl stop containerd || true
+                systemctl start docker 2>/dev/null || true
+                check_result=$(ps aux | grep '[/]usr/bin/dockerd' || true)
+                if [ x"${check_result}" != x"" ]; then
+                    echo "qundr-sec-ops: postinstall : docker service is ready"
+                    break
+                elif [ $retry -gt 6 ]; then
+                    echo "qundr-sec-ops: postinstall : docker service is something wrong."
+                    exit 1
+                else
+                    sleep 12
+                    retry=$(($retry+1))
+                fi
+            done
+        elif [ x"$result" != x"10.0.5.0/25" ]; then
+            echo "qundr-sec-ops: postinstall : restart docker service"
+            systemctl stop docker || true
+            systemctl start docker || true
+        fi
         if [ -d "$SCRIPT_PATH" ] && [ -f "$SCRIPT_PATH/$CONTROL_SH" ]; then
             `"$SCRIPT_PATH/$CONTROL_SH" load_image || true`
             if [ "x$?" = "x0" ]; then

@@ -19,6 +19,8 @@ KAPACITOR_CONF = kapacitor/kapacitor.conf
 LOGROTATE_CONF = logrotate
 INFLUXDB_INIT = influxdb/init.sh
 INFLUXDB_CQ_INIT = influxdb/initcq.sh
+DOCKER_CONF_PATH = $(DESTDIR)/etc/docker/
+DOCKER_CONF = docker/daemon.json
 ENV_CONF= .env
 
 
@@ -34,6 +36,7 @@ install:
 	mkdir -p ${LOGROTATE_CONF_PATH}
 	mkdir -p ${INFLUXDB_PATH}
 	mkdir -p ${INFLUXDB_INIT_PATH}
+	mkdir -p ${DOCKER_CONF_PATH}
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)
 	install -m 0755 $(TARGET2) $(SCRIPT_PATH)
 	install -m 0755 $(QSECOPS_ON_AIR) $(IMAGE_PATH)
@@ -45,6 +48,7 @@ install:
 	install -m 0755 $(ENV_CONF) $(ENV_CONF_PATH)
 	install -m 0755 $(INFLUXDB_INIT) $(INFLUXDB_INIT_PATH)
 	install -m 0755 $(INFLUXDB_CQ_INIT) $(INFLUXDB_INIT_PATH)
+	install -m 0755 $(DOCKER_CONF) $(DOCKER_CONF_PATH)
 
 clean:
 	rm -f ./*.deb
