@@ -55,6 +55,7 @@ RUN chmod a+x /entrypoint.sh && chmod a+x /init-influxdb.sh && mkdir -p /var/log
 COPY kapacitor/kapacitor.conf /etc/kapacitor/kapacitor.conf
 COPY logrotate/influx /etc/logrotate.d/
 COPY logrotate/kapacitor /etc/logrotate.d/
+RUN chmod 644 /etc/logrotate.d/influx && chmod 644 /etc/logrotate.d/kapacitor
 
 EXPOSE 9092
 
