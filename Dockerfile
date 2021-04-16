@@ -37,6 +37,7 @@ RUN set -ex && \
     chmod +x /usr/src/kapacitor-*/* && \
     cp -a /usr/src/kapacitor-*/* /usr/bin/ && \
     rm -rf /etc/periodic/daily/apk && \
+    mv /etc/periodic/daily/logrotate /etc/periodic/hourly && \
     gpgconf --kill all && \
     rm -rf *.tar.gz* /usr/src /root/.gnupg && \
     apk del .build-deps

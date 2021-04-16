@@ -1,10 +1,10 @@
 /var/log/influxdb/influxd.log
 {
-    daily
-    size 50M
-    rotate 7
+    hourly
+    size 4M
+    rotate 168
     missingok
-    dateext
+    dateext dateformat .%Y%m%d%H
     copytruncate
     compress
 }
