@@ -1,19 +1,18 @@
 
-IMAGE_PATH = $(NDR_PATH)/sec-ops/doc/qinfluxdbkapacitor-image
-SCRIPT_PATH = $(NDR_PATH)/sec-ops/scripts
-LOG_PATH = $(NDR_PATH)/log/sec-ops/
-NDR_PATH = $(DESTDIR)/.data/qne-qundr
-INFLUXDB_PATH = $(NDR_PATH)/log/sec-ops/lib
-INFLUXDB_INIT_PATH = $(NDR_PATH)/sec-ops/docker-entrypoint-initdb.d
+IMAGE_PATH = $(NDR_PATH_STATIC)/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/scripts
+NDR_PATH_STATIC = $(DESTDIR)/usr/share/qne-qundr
+NDR_PATH_DYNAMIC = $(DESTDIR)/var/lib/qne-qundr
+INFLUXDB_INIT_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/docker-entrypoint-initdb.d
 TARGET_IMG_NAME = qinfluxdbkapacitor_base
 TARGET1 = $(TARGET_IMG_NAME).tar
 TARGET2 = control.sh
 QSECOPS_ON_AIR = qsecops_on_air
 TARGET4 = docker-compose.yml
-INFLUXDB_CONF_PATH = $(NDR_PATH)/sec-ops/conf/influxdb/
-KAPACITOR_CONF_PATH = $(NDR_PATH)/sec-ops/conf/kapacitor/
-LOGROTATE_CONF_PATH= $(NDR_PATH)/sec-ops/conf/logrotate/
-ENV_CONF_PATH = $(NDR_PATH)/sec-ops/
+INFLUXDB_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/conf/influxdb/
+KAPACITOR_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/conf/kapacitor/
+LOGROTATE_CONF_PATH= $(NDR_PATH_DYNAMIC)/sec-ops/conf/logrotate/
+ENV_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/
 INFLUXDB_CONF = influxdb/influxdb.conf
 KAPACITOR_CONF = kapacitor/kapacitor.conf
 LOGROTATE_CONF = logrotate
@@ -30,11 +29,9 @@ all:
 install:
 	mkdir -p $(IMAGE_PATH)
 	mkdir -p $(SCRIPT_PATH)
-	mkdir -p $(LOG_PATH)
 	mkdir -p ${INFLUXDB_CONF_PATH}
 	mkdir -p ${KAPACITOR_CONF_PATH}
 	mkdir -p ${LOGROTATE_CONF_PATH}
-	mkdir -p ${INFLUXDB_PATH}
 	mkdir -p ${INFLUXDB_INIT_PATH}
 	mkdir -p ${DOCKER_CONF_PATH}
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)

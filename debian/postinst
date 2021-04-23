@@ -20,8 +20,10 @@ set -e
 
 CONTROL_SH="control.sh"
 NDR_PATH="/.data/qne-qundr"
-IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
-SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
+NDR_PATH_DYNAMIC="/var/lib/qne-qundr"
+NDR_PATH_STATIC="/usr/share/qne-qundr"
+IMAGE_PATH=${NDR_PATH_STATIC}/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH=${NDR_PATH_DYNAMIC}/sec-ops/scripts
 
 case "$1" in
     configure)

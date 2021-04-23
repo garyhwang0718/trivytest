@@ -12,13 +12,13 @@ services:
             - KAPACITOR_INFLUXDB_0_URLS_0=http://127.0.0.1:8086
         volumes: 
             - /var/run/influxdb:/var/run/influxdb
-            - ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-            - ${NDR_PATH}/${SEC_OPS_PATH}/conf/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
             - ${NDR_PATH}/log/${SEC_OPS_PATH}/:/var/log
             - ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/
-            - ${NDR_PATH}/${SEC_OPS_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            - ${NDR_PATH}/${SEC_OPS_PATH}/rules:/var/lib/rules
-            - ${NDR_PATH}/${SEC_OPS_PATH}/rule_handler:/var/lib/rule_handler
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/rules:/var/lib/rules
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/rule_handler:/var/lib/rule_handler
             - /var/run:/var/run
         expose:
             - "8086"

@@ -1,9 +1,11 @@
 #!/bin/bash
 
+NDR_PATH_DYNAMIC="/var/lib/qne-qundr"
+NDR_PATH_STATIC="/usr/share/qne-qundr"
 NDR_PATH="/.data/qne-qundr"
 IMAGE_TAR="qinfluxdbkapacitor_base.tar"
-INSTALL_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
-SCRIPT_PATH=${NDR_PATH}/sec-ops/scripts
+INSTALL_PATH=${NDR_PATH_STATIC}/sec-ops/doc/qinfluxdbkapacitor-image
+SCRIPT_PATH=${NDR_PATH_DYNAMIC}/sec-ops/scripts
 CMD_ECHO="/bin/echo"
 CMD_AWK="/usr/bin/awk"
 CMD_RM="/bin/rm"
@@ -18,7 +20,7 @@ exit_with_error_and_clean()
 
 stop_sec_ops()
 {
-   env $(cat ${NDR_PATH}/sec-ops/.env) docker-compose -f ${NDR_PATH}/sec-ops/scripts/docker-compose.yml down
+   env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml down
    if [ "x0" != "x$?" ] ; then
        echo "[$(date)] docker stop and rm qundr-sec-ops failure" >> ${LOG_FILE}
        exit 1
@@ -52,7 +54,7 @@ rm_image()
 
 start_sec_ops()
 {
-   env $(cat ${NDR_PATH}/sec-ops/.env) docker-compose -f ${NDR_PATH}/sec-ops/scripts/docker-compose.yml up -d
+   env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up -d
    if [ "x0" != "x$?" ] ; then
        echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
        exit 1
@@ -99,7 +101,7 @@ version_compare()
         if [ $? -eq 0 ];then
             echo "Migrate to tsi1"
             source ${NDR_PATH}/sec-ops/.env
-            docker run -d --rm --name qundr-sec-ops-migrate -v ${NDR_PATH}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro -v ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/ ${IMAGE_TAG} bash
+            docker run -d --rm --name qundr-sec-ops-migrate -v ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro -v ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/ ${IMAGE_TAG} bash
             docker exec qundr-sec-ops-migrate migrate.sh
             if [ $? -eq 0 ]; then
                 echo "Migrate to tsi1 successfully."

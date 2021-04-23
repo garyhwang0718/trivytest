@@ -19,8 +19,10 @@ set -e
 # the debian-policy package
 
 QSECOPS_ON_AIR="qsecops_on_air"
+NDR_PATH_DYNAMIC="/var/lib/qne-qundr"
+NDR_PATH_STATIC="/usr/share/qne-qundr"
 NDR_PATH="/.data/qne-qundr"
-IMAGE_PATH=${NDR_PATH}/sec-ops/doc/qinfluxdbkapacitor-image
+IMAGE_PATH=${NDR_PATH_STATIC}/sec-ops/doc/qinfluxdbkapacitor-image
 LOG_PATH=${NDR_PATH}/log/sec-ops
 SEC_OPS_PATH=${NDR_PATH}/sec-ops
 case "$1" in
