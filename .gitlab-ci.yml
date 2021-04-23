@@ -14,7 +14,7 @@ build_amd64:
        - $CI_PROJECT_DIR/ci_work/qundr-sec-ops/debian/changelog
  script:
    - echo "build"
-   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash -s - "-d adra"
+   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/build.sh | bash
  tags:
    - qne-qundr-sec-ops-builder
 
@@ -24,6 +24,6 @@ release_amd64:
      - build_amd64
  script:
    - echo "repo"
-   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash
+   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash -s - "-d adra"
  tags:
    - qne-qundr-sec-ops-publisher
