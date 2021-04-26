@@ -24,6 +24,6 @@ release_amd64:
      - build_amd64
  script:
    - echo "repo"
-   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash -s - "-d adra"
+   - curl http://172.17.21.15:10080/misc/ci_scripts/raw/master/repo.sh | sudo --preserve-env bash
  tags:
    - qne-qundr-sec-ops-publisher
