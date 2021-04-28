@@ -14,3 +14,4 @@ Depends: docker-compose
 Pre-Depends: docker-ce
 Description: QuNDR sec-ops module
  <insert long description, indented with spaces>
+XBC-Qne-Build-Date: ${qne:BuildDate}

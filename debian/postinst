@@ -40,7 +40,7 @@ case "$1" in
                     if [ x"${check_result}" != x"" ]; then
                         echo "qundr-sec-ops: postinstall : docker service is ready"
                         break
-                    elif [ $retry -gt 6 ]; then
+                    elif [ $retry -gt 8 ]; then
                         echo "qundr-sec-ops: postinstall : docker service is something wrong."
                         exit 1
                     else
