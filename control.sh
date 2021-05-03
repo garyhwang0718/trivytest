@@ -54,6 +54,11 @@ rm_image()
 
 start_sec_ops()
 {
+   docker images | grep 'qinfluxdbkapacitor_base'
+   if ! [ $? -eq 0 ]; then
+       echo "[$(date)] no sec-ops image. Load image again." >> ${LOG_FILE}
+       load_image
+   fi
    env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up -d
    if [ "x0" != "x$?" ] ; then
        echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
