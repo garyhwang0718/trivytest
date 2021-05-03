@@ -6,7 +6,7 @@ After=multi-user.target docker.service qundr-init.service
 [Service]
 Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
 Environment="SCRIPT_PATH=/var/lib/qne-qundr/sec-ops/scripts"
-Environment="CORRELATION_SCRIPT_PATH=/.data/qne-qundr/correlation-rule/scripts"
+Environment="CORRELATION_SCRIPT_PATH=/var/lib/qne-qundr/correlation-rule/scripts"
 Environment="CONTROL_SH=control.sh"
 Type = simple
 User=root
