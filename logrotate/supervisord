@@ -1,0 +1,10 @@
+/var/log/supervisor/*.log
+{
+    hourly
+    size 4M
+    rotate 168
+    missingok
+    dateext dateformat .%Y%m%d%H
+    copytruncate
+    compress
+}
