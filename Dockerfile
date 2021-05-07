@@ -1,7 +1,7 @@
 FROM alpine:3.12
 
 RUN echo 'hosts: files dns' >> /etc/nsswitch.conf
-RUN apk add --update --no-cache tzdata bash apk-cron curl jq logrotate ca-certificates && \
+RUN apk add --update --no-cache tzdata bash apk-cron curl jq logrotate ca-certificates supervisor && \
     update-ca-certificates
 
 ENV INFLUXDB_VERSION 1.8.3
@@ -38,6 +38,7 @@ RUN set -ex && \
     cp -a /usr/src/kapacitor-*/* /usr/bin/ && \
     rm -rf /etc/periodic/daily/apk && \
     mv /etc/periodic/daily/logrotate /etc/periodic/hourly && \
+    rm -rf /etc/supervisord.conf && \
     gpgconf --kill all && \
     rm -rf *.tar.gz* /usr/src /root/.gnupg && \
     apk del .build-deps
@@ -50,13 +51,15 @@ VOLUME /var/lib/influxdb
 COPY entrypoint.sh /entrypoint.sh
 COPY influxdb/init-influxdb.sh /init-influxdb.sh
 COPY influxdb/migrate.sh /usr/bin/migrate.sh
+COPY supervisor/supervisord.conf /etc/supervisord.conf
 
-RUN chmod a+x /entrypoint.sh && chmod a+x /init-influxdb.sh && mkdir -p /var/log/influxdb/ && chmod a+x /usr/bin/migrate.sh
+RUN chmod a+x /entrypoint.sh && chmod a+x /init-influxdb.sh && chmod a+x /usr/bin/migrate.sh
 
 COPY kapacitor/kapacitor.conf /etc/kapacitor/kapacitor.conf
 COPY logrotate/influx /etc/logrotate.d/
 COPY logrotate/kapacitor /etc/logrotate.d/
-RUN chmod 644 /etc/logrotate.d/influx && chmod 644 /etc/logrotate.d/kapacitor
+COPY logrotate/supervisord /etc/logrotate.d/
+RUN chmod 644 /etc/logrotate.d/influx && chmod 644 /etc/logrotate.d/kapacitor && chmod 644 /etc/logrotate.d/supervisord
 
 EXPOSE 9092
 
