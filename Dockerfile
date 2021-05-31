@@ -59,6 +59,8 @@ COPY kapacitor/kapacitor.conf /etc/kapacitor/kapacitor.conf
 COPY logrotate/influx /etc/logrotate.d/
 COPY logrotate/kapacitor /etc/logrotate.d/
 COPY logrotate/supervisord /etc/logrotate.d/
+COPY health/healthcheck.sh /healthcheck.sh
+
 RUN chmod 644 /etc/logrotate.d/influx && chmod 644 /etc/logrotate.d/kapacitor && chmod 644 /etc/logrotate.d/supervisord
 
 EXPOSE 9092
