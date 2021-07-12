@@ -16,9 +16,7 @@ RUN set -ex && \
     for key in \
         05CE15085FC09D18E99EFB22684A14CF2582E0C5 ; \
     do \
-        gpg --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys "$key" || \
-        gpg --keyserver hkp://pgp.mit.edu --recv-keys:80 "$key" || \
-        gpg --keyserver hkp://keyserver.pgp.com:80 --recv-keys "$key" ; \
+        gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys "$key" ; \
     done && \
     wget --no-verbose https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUXDB_VERSION}-static_linux_amd64.tar.gz.asc && \
     wget --no-verbose https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUXDB_VERSION}-static_linux_amd64.tar.gz && \
