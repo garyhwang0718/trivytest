@@ -1,3 +1,9 @@
+qundr-sec-ops (1.6.0) UNRELEASED; urgency=medium
+
+  * 2021-07-14: As discussed, revise version. 
+
+ -- ateam <ateam@ateam-Standard-PC-i440FX-PIIX-1996>  Wed, 14 Jul 2021 11:59:47 +0800
+
 qundr-sec-ops (1.0.0) unstable; urgency=medium
 
   * Initial Release.
