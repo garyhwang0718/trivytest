@@ -18,6 +18,7 @@ ReadWritePaths=/var/run/ /var/log/ /var/cache/
 PermissionsStartOnly=true
 
 ExecStartPre=/usr/sbin/qne-storage-util --data_vol -c -p qne-qundr -o qne || true
+ExecStartPre=/bin/bash -c '${SCRIPT_PATH}/control.sh stop'
 ExecStartPost=/bin/bash -c 'if [ -f "$CORRELATION_SCRIPT_PATH/$CONTROL_SH" ]; then ${CORRELATION_SCRIPT_PATH}/control.sh load_tasks; fi'
 ExecStartPost=/bin/bash -c 'if [ -f "$SCRIPT_PATH/$CONTROL_SH" ]; then $SCRIPT_PATH/control.sh configure; fi'
 ExecStart=/bin/bash -c '${SCRIPT_PATH}/control.sh start'

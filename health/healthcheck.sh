@@ -9,5 +9,9 @@ curl -s --unix-socket /var/run/influxdb/influxdb.sock -G 'http://localhost/ping?
 if [ $? -eq 0 ] ;then
     influxdb=0
 fi
-echo "{\"error_code\":0,\"status\":{\"influxdb\":$influxdb,\"kapacitor\":$kapacitor}}"
 
+if [ $kapacitor -eq 0 ] && [ $influxdb -eq 0 ];then
+    echo "{\"error_code\":0,\"status\":{\"influxdb\":$influxdb,\"kapacitor\":$kapacitor}}"
+else
+    echo "{\"error_code\":1,\"status\":{\"influxdb\":$influxdb,\"kapacitor\":$kapacitor}}"
+fi
