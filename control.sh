@@ -116,6 +116,14 @@ version_compare()
     fi
 }
 
+load_udf()
+{
+    SEC_OPS="qundr-sec-ops"
+    task_name="aggregation_reporting"
+    udf_path="/var/lib/udf"
+    name="udf"
+    docker exec $SEC_OPS kapacitor define ${task_name} -tick ${udf_path}/${name}.tick
+}
 case "$1" in
 	load_image)
 		load_image
@@ -131,6 +139,9 @@ case "$1" in
 		;;
         configure)
                 retention_policy
+                ;;
+        load_udf)
+                load_udf
                 ;;
         ver_cmp)
                 version_compare $2

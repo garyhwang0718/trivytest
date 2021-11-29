@@ -15,6 +15,7 @@ services:
             - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
             - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
             - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/conf/supervisor/supervisord.conf:/etc/supervisord.conf:ro
+            - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/udf/udf.tick://var/lib/udf/udf.tick:ro 
             - ${NDR_PATH}/log/${SEC_OPS_PATH}/:/var/log
             - ${NDR_PATH}/${SEC_OPS_PATH}/lib/:/var/lib/influxdb/
             - ${NDR_PATH_DYNAMIC}/${SEC_OPS_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

@@ -1,0 +1,9 @@
+dbrp "ndr_management"."autogen"
+
+var data = stream
+  |from()
+    .measurement('threat_secops_event')
+    .where(lambda: "level" == 2 OR "level" == 3 OR "level" == 4 OR "level" == 5)
+data
+  @mirror()
+      .field('mylevel', 'medimum')

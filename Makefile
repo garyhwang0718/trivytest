@@ -13,11 +13,13 @@ INFLUXDB_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/conf/influxdb/
 KAPACITOR_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/conf/kapacitor/
 LOGROTATE_CONF_PATH= $(NDR_PATH_DYNAMIC)/sec-ops/conf/logrotate/
 SUPERVISOR_CONF_PATH= $(NDR_PATH_DYNAMIC)/sec-ops/conf/supervisor/
+UDF_TICK_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/udf/
 ENV_CONF_PATH = $(NDR_PATH_DYNAMIC)/sec-ops/
 SUPERVISOR_CONF = supervisor/supervisord.conf
 INFLUXDB_CONF = influxdb/influxdb.conf
 KAPACITOR_CONF = kapacitor/kapacitor.conf
 LOGROTATE_CONF = logrotate
+UDF_TICK = udf/udf.tick
 INFLUXDB_INIT = influxdb/init.sh
 INFLUXDB_CQ_INIT = influxdb/initcq.sh
 RULE_PATH= $(NDR_PATH_DYNAMIC)/sec-ops/rules
@@ -41,6 +43,7 @@ install:
 	mkdir -p ${DOCKER_CONF_PATH}
 	mkdir -p ${RULE_PATH}
 	mkdir -p ${RULE_HANDLER_PATH}
+	mkdir -p ${UDF_TICK_PATH}
 	install -m 0755 $(TARGET1) $(IMAGE_PATH)
 	install -m 0755 $(TARGET2) $(SCRIPT_PATH)
 	install -m 0755 $(QSECOPS_ON_AIR) $(IMAGE_PATH)
@@ -50,6 +53,7 @@ install:
 	install -m 0644 $(SUPERVISOR_CONF) $(SUPERVISOR_CONF_PATH)
 	install -m 0755 $(LOGROTATE_CONF)/influx $(LOGROTATE_CONF_PATH)
 	install -m 0755 $(LOGROTATE_CONF)/kapacitor $(LOGROTATE_CONF_PATH)
+	install -m 0755 $(UDF_TICK) $(UDF_TICK_PATH)
 	install -m 0755 $(ENV_CONF) $(ENV_CONF_PATH)
 	install -m 0755 $(INFLUXDB_INIT) $(INFLUXDB_INIT_PATH)
 	install -m 0755 $(INFLUXDB_CQ_INIT) $(INFLUXDB_INIT_PATH)
