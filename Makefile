@@ -20,6 +20,7 @@ INFLUXDB_CONF = influxdb/influxdb.conf
 KAPACITOR_CONF = kapacitor/kapacitor.conf
 LOGROTATE_CONF = logrotate
 UDF_TICK = udf/udf.tick
+UDF_INIT = udf/initudf.sh
 INFLUXDB_INIT = influxdb/init.sh
 INFLUXDB_CQ_INIT = influxdb/initcq.sh
 RULE_PATH= $(NDR_PATH_DYNAMIC)/sec-ops/rules
@@ -57,6 +58,7 @@ install:
 	install -m 0755 $(ENV_CONF) $(ENV_CONF_PATH)
 	install -m 0755 $(INFLUXDB_INIT) $(INFLUXDB_INIT_PATH)
 	install -m 0755 $(INFLUXDB_CQ_INIT) $(INFLUXDB_INIT_PATH)
+	install -m 0755 $(UDF_INIT) $(INFLUXDB_INIT_PATH)
 	install -m 0755 $(DOCKER_CONF) $(DOCKER_CONF_PATH)
 
 clean:

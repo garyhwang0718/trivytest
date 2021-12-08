@@ -1,7 +1,7 @@
 FROM alpine:3.12
 
 RUN echo 'hosts: files dns' >> /etc/nsswitch.conf
-RUN apk add --update --no-cache tzdata bash apk-cron curl jq logrotate ca-certificates supervisor && \
+RUN apk add --update --no-cache tzdata bash apk-cron curl jq logrotate ca-certificates supervisor netcat-openbsd && \
     update-ca-certificates
 
 ENV INFLUXDB_VERSION 1.8.3

@@ -59,7 +59,7 @@ start_sec_ops()
        echo "[$(date)] no sec-ops image. Load image again." >> ${LOG_FILE}
        load_image
    fi
-   env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up -d
+   env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up
    if [ "x0" != "x$?" ] ; then
        echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
        exit 1
@@ -116,14 +116,6 @@ version_compare()
     fi
 }
 
-load_udf()
-{
-    SEC_OPS="qundr-sec-ops"
-    task_name="aggregation_reporting"
-    udf_path="/var/lib/udf"
-    name="udf"
-    docker exec $SEC_OPS kapacitor define ${task_name} -tick ${udf_path}/${name}.tick
-}
 case "$1" in
 	load_image)
 		load_image
@@ -139,9 +131,6 @@ case "$1" in
 		;;
         configure)
                 retention_policy
-                ;;
-        load_udf)
-                load_udf
                 ;;
         ver_cmp)
                 version_compare $2
