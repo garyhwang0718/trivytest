@@ -1,5 +1,5 @@
 [Unit]
-Description=ndr_manager
+Description=qundr-sec-ops
 Requires=docker.service qundr-init.service
 After=multi-user.target docker.service qundr-init.service
 
