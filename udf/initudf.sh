@@ -20,8 +20,11 @@ done
 
 kapacitor define ${task_name} -tick ${udf_path}/${name}.tick
 
-result=$(echo '{"api":"/aggregation_rule","method":"get"}' | nc -N -U /var/run/qundr-aggregation-reporting.sock | jq .result[].schedule_type -r)
-if [ x"$result" = x"i" ];then
-    echo "[$(date)] rule match"
-    kapacitor enable ${task_name}
-fi
+result=$(echo '{"api":"/aggregation_rule","method":"get"}' | nc -N -U /var/run/qundr-aggregation-reporting.sock)
+for k in $(jq '.result[].schedule_type' -r <<< "$result");do
+    if [ x"$k" = x"i" ];then
+        echo "[$(date)] rule match"
+        kapacitor enable ${task_name}
+        break
+    fi
+done
