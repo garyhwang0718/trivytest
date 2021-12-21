@@ -52,18 +52,46 @@ rm_image()
 	fi
 }
 
+
+init_debug_settings()
+{
+    APP_NAME="qundr"
+    SECTION_NAME="ndr_manager"
+    DEBUG_MODE="debug_mode"
+    SEC_OPS_ENV="/var/lib/qne-qundr/sec-ops/.env"
+    SUPERVISOR_CONF="/var/lib/qne-qundr/sec-ops/conf/supervisor/supervisord.conf"
+    KAPACITOR_CONF="/var/lib/qne-qundr/sec-ops/conf/kapacitor/kapacitor.conf"
+
+    result=$(/usr/bin/qgetcfg --app=$APP_NAME $SECTION_NAME $DEBUG_MODE)
+    sed -i "/$DEBUG_MODE/d" $SEC_OPS_ENV
+    if [ x"$result" = x"0" ] || [ x"$result" = x"" ]; then
+        echo "$DEBUG_MODE=0" >> $SEC_OPS_ENV
+        sed -i -e "s/logfile=.*/logfile=\/dev\/null/g" $SUPERVISOR_CONF
+        sed -i -e "s/stdout_logfile = .*/stdout_logfile = \/dev\/fd\/1/g" $SUPERVISOR_CONF
+        sed -i -e "s/stderr_logfile = .*/stderr_logfile = \/dev\/fd\/1/g" $SUPERVISOR_CONF
+        sed -i -e 's/  level = .*/  level = \"ERROR\"/g' $KAPACITOR_CONF
+    else
+        echo "$DEBUG_MODE=1" >> $SEC_OPS_ENV
+        sed -i -e "s/logfile=.*/logfile=\/var\/log\/supervisor\/supervisord.log/g" $SUPERVISOR_CONF
+        sed -i -e "s/stdout_logfile = .*/stdout_logfile = \/var\/log\/supervisor\/%(program_name)s.log/g" $SUPERVISOR_CONF
+        sed -i -e "s/stderr_logfile = .*/stderr_logfile = \/var\/log\/influxdb\/%(program_name)s.log/g" $SUPERVISOR_CONF
+        sed -i -e 's/  level = .*/  level = \"INFO\"/g' $KAPACITOR_CONF
+    fi
+}
+
 start_sec_ops()
 {
-   docker images | grep 'qinfluxdbkapacitor_base'
-   if ! [ $? -eq 0 ]; then
-       echo "[$(date)] no sec-ops image. Load image again." >> ${LOG_FILE}
-       load_image
-   fi
-   env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up
-   if [ "x0" != "x$?" ] ; then
-       echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
-       exit 1
-   fi 
+    init_debug_settings
+    docker images | grep 'qinfluxdbkapacitor_base'
+    if ! [ $? -eq 0 ]; then
+        echo "[$(date)] no sec-ops image. Load image again." >> ${LOG_FILE}
+        load_image
+    fi
+    env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up 2>&1 >/dev/null
+    if [ "x0" != "x$?" ] ; then
+        echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
+        exit 1
+    fi
 }
 
 retention_policy()
