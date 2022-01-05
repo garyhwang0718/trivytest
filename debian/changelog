@@ -1,4 +1,4 @@
-qundr-sec-ops (1.7.0) UNRELEASED; urgency=medium
+qundr-sec-ops (1.7.0) unstable; urgency=medium
 
   * 2021-11-29: Add UDF feature. This is used for aggregation reporting function. 
 
