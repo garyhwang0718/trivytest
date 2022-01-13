@@ -1,7 +1,7 @@
 [Unit]
 Description=qundr-sec-ops
 Requires=docker.service qundr-init.service
-After=multi-user.target docker.service qundr-init.service
+After=multi-user.target docker.service qundr-init.service qundr-aggregation-reporting.service
 
 [Service]
 Environment="QNE_APP=QuNDR" "EXEC_USER=root" "EXEC_GROUP=root"
