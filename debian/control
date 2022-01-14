@@ -10,7 +10,7 @@ Homepage: <insert the upstream URL, if relevant>
 
 Package: qundr-sec-ops
 Architecture: any
-Depends: docker-compose
+Depends: docker-compose,qundr-aggregation-reporting
 Pre-Depends: docker-ce
 Description: QuNDR sec-ops module
  <insert long description, indented with spaces>
