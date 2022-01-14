@@ -67,14 +67,14 @@ init_debug_settings()
     if [ x"$result" = x"0" ] || [ x"$result" = x"" ]; then
         echo "$DEBUG_MODE=0" >> $SEC_OPS_ENV
         sed -i -e "s/logfile=.*/logfile=\/dev\/null/g" $SUPERVISOR_CONF
-        sed -i -e "s/stdout_logfile = .*/stdout_logfile = \/dev\/fd\/1/g" $SUPERVISOR_CONF
-        sed -i -e "s/stderr_logfile = .*/stderr_logfile = \/dev\/fd\/1/g" $SUPERVISOR_CONF
+        sed -i -e "s/stderr_logfile = .*/redirect_stderr=true/g" $SUPERVISOR_CONF
+        sed -i -e "s/stdout_logfile = .*/redirect_stdout=true/g" $SUPERVISOR_CONF
         sed -i -e 's/  level = .*/  level = \"ERROR\"/g' $KAPACITOR_CONF
     else
         echo "$DEBUG_MODE=1" >> $SEC_OPS_ENV
         sed -i -e "s/logfile=.*/logfile=\/var\/log\/supervisor\/supervisord.log/g" $SUPERVISOR_CONF
-        sed -i -e "s/stdout_logfile = .*/stdout_logfile = \/var\/log\/supervisor\/%(program_name)s.log/g" $SUPERVISOR_CONF
-        sed -i -e "s/stderr_logfile = .*/stderr_logfile = \/var\/log\/influxdb\/%(program_name)s.log/g" $SUPERVISOR_CONF
+        sed -i -e "s/redirect_stdout=.*/stdout_logfile = \/var\/log\/supervisor\/%(program_name)s.log/g" $SUPERVISOR_CONF
+        sed -i -e "s/redirect_stderr=.*/stderr_logfile = \/var\/log\/influxdb\/%(program_name)s.log/g" $SUPERVISOR_CONF
         sed -i -e 's/  level = .*/  level = \"INFO\"/g' $KAPACITOR_CONF
     fi
 }
