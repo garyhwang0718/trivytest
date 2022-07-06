@@ -58,9 +58,9 @@ init_debug_settings()
     APP_NAME="qundr"
     SECTION_NAME="ndr_manager"
     DEBUG_MODE="debug_mode"
-    SEC_OPS_ENV="/var/lib/qne-qundr/sec-ops/.env"
-    SUPERVISOR_CONF="/var/lib/qne-qundr/sec-ops/conf/supervisor/supervisord.conf"
-    KAPACITOR_CONF="/var/lib/qne-qundr/sec-ops/conf/kapacitor/kapacitor.conf"
+    SEC_OPS_ENV=${NDR_PATH_DYNAMIC}"/sec-ops/.env"
+    SUPERVISOR_CONF=${NDR_PATH_DYNAMIC}"/sec-ops/conf/supervisor/supervisord.conf"
+    KAPACITOR_CONF=${NDR_PATH_DYNAMIC}"/sec-ops/conf/kapacitor/kapacitor.conf"
 
     result=$(/usr/bin/qgetcfg --app=$APP_NAME $SECTION_NAME $DEBUG_MODE)
     sed -i "/$DEBUG_MODE/d" $SEC_OPS_ENV
