@@ -14,9 +14,10 @@ if [ "$i" = 0 ]; then
         exit 1
 fi
 
-jsonResult=( $(curl -s --unix-socket /var/run/influxdb/influxdb.sock  -G 'http://localhost/query?db=ndr_management' --data-urlencode "q=SHOW CONTINUOUS QUERIES" | jq -r '[.results[].series[0].values[][0]]?') )
+#jsonResult=( $(curl -s --unix-socket /var/run/influxdb/influxdb.sock  -G 'http://localhost/query?db=ndr_management' --data-urlencode "q=SHOW CONTINUOUS QUERIES" | jq -r '[.results[].series[0].values[][0]]?') )
+jsonResult=( $(curl -s --unix-socket /var/run/influxdb/influxdb.sock  -G 'http://localhost/query' --data-urlencode "q=SHOW CONTINUOUS QUERIES" | jq -r '[.results[].series[] | select(.name == "ndr_management").values[][0]]?') )
 if [ $? -eq 0 ]; then
-    echo "[initcq] drop current continuous query"
+    echo "[initcq] drop current continuous query: ndr_management"
     for element in "${jsonResult[@]}"
     do
         if [ x"$element" != x"[" ] && [ x"$element" != x"]" ]; then
@@ -25,8 +26,26 @@ if [ $? -eq 0 ]; then
         fi
     done
 fi
+jsonResult=( $(curl -s --unix-socket /var/run/influxdb/influxdb.sock  -G 'http://localhost/query' --data-urlencode "q=SHOW CONTINUOUS QUERIES" | jq -r '[.results[].series[] | select(.name == "dta_stats").values[][0]]?') )
+if [ $? -eq 0 ]; then
+    echo "[initcq] drop current continuous query: dta_stats"
+    for element in "${jsonResult[@]}"
+    do
+        if [ x"$element" != x"[" ] && [ x"$element" != x"]" ]; then
+            newElement=$(echo $element | sed 's/,//g')
+            influx -execute="DROP CONTINUOUS QUERY "${newElement}" ON "dta_stats"" -database=dta_stats
+        fi
+    done
+fi
 influx -execute="CREATE CONTINUOUS QUERY "cq_security_ops_10m" ON ndr_management RESAMPLE EVERY 5m BEGIN SELECT count(event_type) as count_event_type,count(level) as count_level, count(action) as count_action INTO "e_security_ops_10m" FROM threat_secops_event GROUP BY time(10m),* END" -database=ndr_management
 influx -execute="CREATE CONTINUOUS QUERY "cq_security_ops_1h" ON ndr_management RESAMPLE EVERY 5m BEGIN SELECT count(event_type) as count_event_type,count(level) as count_level, count(action) as count_action INTO "e_security_ops_1h" FROM threat_secops_event GROUP BY time(1h),* END" -database=ndr_management
 influx -execute="CREATE CONTINUOUS QUERY "cq_security_ops_2h" ON ndr_management RESAMPLE EVERY 5m BEGIN SELECT count(event_type) as count_event_type,count(level) as count_level, count(action) as count_action INTO "e_security_ops_2h" FROM threat_secops_event GROUP BY time(2h),* END" -database=ndr_management
 influx -execute="CREATE CONTINUOUS QUERY "cq_security_ops_12h" ON ndr_management RESAMPLE EVERY 5m BEGIN SELECT count(event_type) as count_event_type,count(level) as count_level, count(action) as count_action INTO "e_security_ops_12h" FROM threat_secops_event GROUP BY time(12h),* END" -database=ndr_management
 influx -execute="CREATE CONTINUOUS QUERY "cq_security_ops_2d" ON ndr_management RESAMPLE EVERY 5m BEGIN SELECT count(event_type) as count_event_type,count(level) as count_level, count(action) as count_action INTO "e_security_ops_2d" FROM threat_secops_event GROUP BY time(2d),* END" -database=ndr_management
+
+influx -execute="CREATE CONTINUOUS QUERY cq_dta_pkts_10m ON dta_stats RESAMPLE EVERY 5m BEGIN SELECT MEAN(pkt_cnt) INTO dta_stats.autogen.dta_pkts_10m FROM dta_stats.autogen.dta_pkts GROUP BY time(10m), * END" -database=dta_stats
+influx -execute="CREATE CONTINUOUS QUERY cq_dta_pkts_1h ON dta_stats RESAMPLE EVERY 5m BEGIN SELECT MEAN(pkt_cnt) INTO dta_stats.autogen.dta_pkts_1h FROM dta_stats.autogen.dta_pkts GROUP BY time(1h), * END" -database=dta_stats
+influx -execute="CREATE CONTINUOUS QUERY cq_dta_pkts_2h ON dta_stats RESAMPLE EVERY 5m BEGIN SELECT MEAN(pkt_cnt) INTO dta_stats.autogen.dta_pkts_2h FROM dta_stats.autogen.dta_pkts GROUP BY time(2h), * END" -database=dta_stats
+influx -execute="CREATE CONTINUOUS QUERY cq_dta_pkts_12h ON dta_stats RESAMPLE EVERY 5m BEGIN SELECT MEAN(pkt_cnt) INTO dta_stats.autogen.dta_pkts_12h FROM dta_stats.autogen.dta_pkts GROUP BY time(12h), * END" -database=dta_stats
+influx -execute="CREATE CONTINUOUS QUERY cq_dta_pkts_2d ON dta_stats RESAMPLE EVERY 5m BEGIN SELECT MEAN(pkt_cnt) INTO dta_stats.autogen.dta_pkts_2d FROM dta_stats.autogen.dta_pkts GROUP BY time(2d), * END" -database=dta_stats
+

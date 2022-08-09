@@ -115,11 +115,16 @@ retention_policy()
     if [ "x" = "x${RETENTION_POLICY}" ]; then
         echo "[$(date)] retention_policy: No default policy. Set to 180 days" >> ${LOG_FILE}
         curl -s --unix-socket /var/run/influxdb/influxdb.sock -X POST -G "127.0.0.1/query?db=ndr_management" --data-urlencode 'q=ALTER RETENTION POLICY "autogen" on ndr_management DURATION 180d DEFAULT'
+        curl -s --unix-socket /var/run/influxdb/influxdb.sock -X POST -G "127.0.0.1/query?db=dta_stats" --data-urlencode 'q=ALTER RETENTION POLICY "autogen" on dta_stats DURATION 180d DEFAULT'
         if [ $? -eq 0 ] ;then
             `qsetcfg --app=qundr "retention_policy" "default" "180d"`
         fi
     else
-        result=$(curl -s --unix-socket /var/run/influxdb/influxdb.sock -G "127.0.0.1/query?db=ndr_management" --data-urlencode "q=SHOW RETENTION POLICIES" | jq '.results[].series[].values[][1]')
+        result=$(curl -s --unix-socket /var/run/influxdb/influxdb.sock -G "127.0.0.1/query?db=ndr_management" --data-urlencode "q=SHOW RETENTION POLICIES" | jq -r '.results[].series[].values[][1]')
+        dta_result=$(curl -s --unix-socket /var/run/influxdb/influxdb.sock -G "127.0.0.1/query?db=dta_stats" --data-urlencode "q=SHOW RETENTION POLICIES" | jq -r '.results[].series[].values[][1]')
+        if [ x"$result" != x"dta_result" ]; then
+            curl -s --unix-socket /var/run/influxdb/influxdb.sock -X POST -G "127.0.0.1/query?db=dta_stats" --data-urlencode 'q=ALTER RETENTION POLICY "autogen" on dta_stats DURATION '"$result"' DEFAULT'
+        fi
         echo "[$(date)] retention_policy: current default policy is $result " >> ${LOG_FILE}
     fi
 
