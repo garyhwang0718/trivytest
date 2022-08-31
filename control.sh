@@ -87,9 +87,16 @@ start_sec_ops()
         echo "[$(date)] no sec-ops image. Load image again." >> ${LOG_FILE}
         load_image
     fi
-    env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up 2>&1 >/dev/null
+    result=$(env $(cat ${NDR_PATH_DYNAMIC}/sec-ops/.env) docker-compose -f ${NDR_PATH_DYNAMIC}/sec-ops/scripts/docker-compose.yml up -d 2>&1)
     if [ "x0" != "x$?" ] ; then
-        echo "[$(date)] docker run sec-ops failure" >> ${LOG_FILE}
+        echo "[$(date)] docker run sec-ops failure ${result}" >> ${LOG_FILE}
+        if [[ ${result} == *"Unable to enable SKIP DNAT"* ]];then
+            echo "[$(date)] restart docker due to iptables issue." >> ${LOG_FILE}
+            systemctl restart docker
+            systemctl restart qundr-snort
+            systemctl restart qundr-suricata-image
+            systemctl restart qundr-traps-image
+        fi
         exit 1
     fi
 }
