@@ -11,6 +11,7 @@ Environment="CONTROL_SH=control.sh"
 Type = simple
 User=root
 Group=root
+RemainAfterExit=yes
 Restart=on-failure
 RestartSec=5
 
@@ -24,6 +25,7 @@ ExecStartPre=/bin/bash -c '${SCRIPT_PATH}/control.sh stop'
 ExecStartPost=/bin/bash -c 'if [ -f "$CORRELATION_SCRIPT_PATH/$CONTROL_SH" ]; then ${CORRELATION_SCRIPT_PATH}/control.sh load_tasks; fi'
 ExecStartPost=/bin/bash -c 'if [ -f "$SCRIPT_PATH/$CONTROL_SH" ]; then $SCRIPT_PATH/control.sh configure; fi'
 ExecStart=/bin/bash -c '${SCRIPT_PATH}/control.sh start'
+ExecStop=/bin/bash -c '${SCRIPT_PATH}/control.sh stop'
 
 [Install]
 WantedBy=multi-user.target
