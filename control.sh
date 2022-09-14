@@ -126,7 +126,7 @@ retention_policy()
             `qsetcfg --app=qundr "retention_policy" "default" "180d"`
         fi
     else
-        result=$(curl -s --unix-socket /var/run/influxdb/influxdb.sock -G "127.0.0.1/query?db=ndr_management" --data-urlencode "q=SHOW RETENTION POLICIES" | jq '.results[].series[].values[][1]')
+        result=$(curl -s --unix-socket /var/run/influxdb/influxdb.sock -G "127.0.0.1/query?db=ndr_management" --data-urlencode "q=SHOW RETENTION POLICIES" | jq -r '.results[].series[].values[][1]')
         echo "[$(date)] retention_policy: current default policy is $result " >> ${LOG_FILE}
     fi
 
