@@ -29,7 +29,6 @@ remove_old_images(){
 case "$1" in
     install|upgrade)
         echo "qundr-sec-ops: Preinstall check $2"
-        systemctl enable docker || true
         systemctl start docker || true
         remove_old_images || true
     ;;
